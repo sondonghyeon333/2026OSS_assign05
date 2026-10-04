@@ -40,6 +40,29 @@
         const authorInput = document.getElementById("author");
         const categorySelect = document.getElementById("category");
         const priceInput = document.getElementById("price");
+        const bookTableBody = document.getElementById("bookTableBody"); 
+        // STEP 6: Read 구현 , Array 데이터를 화면에 그려주는 render 함수를 사용해서
+        function render() {
+            // 테이블 몸통 내부를 초기화한 뒤 배열 데이터로 다시 채움
+            bookTableBody.innerHTML = "";
+
+            books.forEach(book => {
+                const row = `
+                    <tr>
+                        <td>${book.id}</td>
+                        <td>${book.title}</td>
+                        <td>${book.author}</td>
+                        <td>${book.category}</td>
+                        <td>${book.price}</td>
+                        <td>-</td>
+                    </tr>
+                `;
+                bookTableBody.innerHTML += row;
+            });
+        }
+
+        // 페이지가 처음 실행되었을 때 초기 데이터 출력
+        render();
 
         // STEP 5:  Create 구현
         bookForm.addEventListener("submit", function(e) {
@@ -97,7 +120,10 @@
 
             // Form 입력값 초기화 
             bookForm.reset();
+            // 데이터가 추가된 후 화면을 보기 위해 다시 render() 함수 호출
+            render();
         });
+        
 
     </script>
 
