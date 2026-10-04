@@ -34,7 +34,73 @@
             { id: 2, title: "CSS", author: "Lee", category: "Web", price: 12000 },
             { id: 3, title: "JavaScript", author: "Park", category: "Web", price: 15000 }
         ];
+        // HTML 요소들을 자바스크립트 변수로 가져오기
+        const bookForm = document.getElementById("bookForm");
+        const titleInput = document.getElementById("title");
+        const authorInput = document.getElementById("author");
+        const categorySelect = document.getElementById("category");
+        const priceInput = document.getElementById("price");
+
+        // STEP 5:  Create 구현
+        bookForm.addEventListener("submit", function(e) {
+            // form이 제출될 때 페이지가 새로고침되는 동작 막기
+            e.preventDefault();
+
+            // 입력한 값들을 가져오고 앞뒤 공백 제거
+            const title = titleInput.value.trim();
+            const author = authorInput.value.trim();
+            const category = categorySelect.value;
+            const price = Number(priceInput.value);
+
+            // Validation 
+            // 입력값이 올바르지 않으면 경고를 띄우고 배열에 추가하지 않기
+            
+            if (title === "") {
+                alert("도서 제목을 입력해주세요!");
+                titleInput.focus();
+                return; // 함수 강제 종료 
+            }
+
+            if (author === "") {
+                alert("저자를 입력해주세요!");
+                authorInput.focus();
+                return;
+            }
+
+            if (category === "") {
+                alert("카테고리를 선택해주세요!");
+                categorySelect.focus();
+                return;
+            }
+
+            if (isNaN(price) || price <= 0) {
+                alert("올바른 가격을 입력해주세요!");
+                priceInput.focus();
+                return;
+            }
+
+            // Array에 데이터 추가 
+            // 새로운 아이템의 ID 만들기 마지막 아이템 ID + 1
+            const newId = books.length > 0 ? books[books.length - 1].id + 1 : 1;
+
+            // 입력받은 값들로 새로운 도서 객체 만들기
+            const newBook = {
+                id: newId,
+                title: title,
+                author: author,
+                category: category,
+                price: price
+            };
+
+            // push() 메서드를 이용해 배열에 데이터 추가
+            books.push(newBook);
+
+            // Form 입력값 초기화 
+            bookForm.reset();
+        });
+
     </script>
+
 </body>
 </html>
 
