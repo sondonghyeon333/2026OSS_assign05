@@ -35,6 +35,7 @@
             { id: 3, title: "JavaScript", author: "Park", category: "Web", price: 15000 }
         ];
         // HTML 요소들을 자바스크립트 변수로 가져오기
+        const bookIdInput = document.getElementById("bookId");
         const bookForm = document.getElementById("bookForm");
         const titleInput = document.getElementById("title");
         const authorInput = document.getElementById("author");
@@ -54,7 +55,7 @@
                         <td>${book.author}</td>
                         <td>${book.category}</td>
                         <td>${book.price}</td>
-                        <td>-</td>
+                        <td><button type="button" onclick="editBook(${book.id})">수정</button></td>
                     </tr>
                 `;
                 bookTableBody.innerHTML += row;
@@ -63,12 +64,27 @@
 
         // 페이지가 처음 실행되었을 때 초기 데이터 출력
         render();
+        // STEP 7 : 수정버튼을 누르면 기존 데이터를 Form에 집어넣어 주는 함수
+        function editBook(id) {
+            // 배열에서 클릭한 ID와 일치하는 책 찾기
+            const book = books.find(b => b.id === id);
+            if (!book) return;
 
-        // STEP 5:  Create 구현
+            // Form 입력창들에 기존 데이터 채워넣기
+            bookIdInput.value = book.id; // ID 칸에 기록 
+            titleInput.value = book.title;
+            authorInput.value = book.author;
+            categorySelect.value = book.category;
+            priceInput.value = book.price;
+        }
+
+        // STEP 5 Create 구현과 STEP 7 Update 처리
         bookForm.addEventListener("submit", function(e) {
             // form이 제출될 때 페이지가 새로고침되는 동작 막기
             e.preventDefault();
 
+            // 숨겨진 input에서 id 값을 가져오기
+            const id = bookIdInput.value;
             // 입력한 값들을 가져오고 앞뒤 공백 제거
             const title = titleInput.value.trim();
             const author = authorInput.value.trim();
@@ -101,23 +117,29 @@
                 priceInput.focus();
                 return;
             }
-
-            // Array에 데이터 추가 
-            // 새로운 아이템의 ID 만들기 마지막 아이템 ID + 1
-            const newId = books.length > 0 ? books[books.length - 1].id + 1 : 1;
-
-            // 입력받은 값들로 새로운 도서 객체 만들기
-            const newBook = {
-                id: newId,
-                title: title,
-                author: author,
-                category: category,
-                price: price
-            };
-
-            // push() 메서드를 이용해 배열에 데이터 추가
-            books.push(newBook);
-
+            // [조건문] ID가 비어있으면 추가(Create), 있으면 수정(Update)
+            if (id === "") {
+                // Create
+                // Array에 데이터 추가 
+                // 새로운 아이템의 ID 만들기 마지막 아이템 ID + 1
+                const newId = books.length > 0 ? books[books.length - 1].id + 1 : 1;
+                 // 입력받은 값들로 새로운 도서 객체 만들기
+                const newBook = { id: newId, title, author, category, price };
+                // push() 메서드를 이용해 배열에 데이터 추가
+                books.push(newBook);
+            } else {
+                // Update
+                const index = books.findIndex(b => b.id === Number(id));
+                if (index !== -1) {
+                    books[index].title = title;
+                    books[index].author = author;
+                    books[index].category = category;
+                    books[index].price = price;
+                }
+                // 수정이 끝났으니 숨겨진 ID 초기화 
+                bookIdInput.value = "";
+            }
+        
             // Form 입력값 초기화 
             bookForm.reset();
             // 데이터가 추가된 후 화면을 보기 위해 다시 render() 함수 호출
