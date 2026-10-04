@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+    // HTML이 완전히 로드된 후에 자바스크립트가 실행된다.
+    window.addEventListener("load",function(){
+        const btn1 = document.querySelector("#btn1");
+        const fruit = document.querySelector("#fruit");
+        const list = document.querySelector("#list");
+        // [추가] 버튼을 클릭했을 때 실행하는 동작
+        btn1.addEventListener("click",function(){
+            // 입력창에 적힌 내용을 쉼표 기준으로 쪼개서 배열로 만들기.
+            const data = fruit.value.split(",");
+        // 입력된 개수만큼 반복문을 돌며 화면에 목록을 추가.  
+            for(i=0;i < data.length; i++){
+                const one = document.createElement("li");
+                one.textContent = data[i] + " ";
+                //삭제 기능을 하는 button
+                const rbtn = document.createElement("button");
+                rbtn.textContent = "X";
+                //삭제 버튼을 클릭했을 때의 이벤트
+                rbtn.addEventListener("click", function(e){
+                    //클릭한 부모요소를 찾아 삭제
+                    e.target.parentElement.remove();
+                });
+                //삭제 버튼을 li 태그에 자식으로 넣기
+                one.appendChild(rbtn)
+                //전체 목록 list에 li를 자식으로 추가
+                list.appendChild(one);
+
+            }
+            // 항목 추가가 끝나면 입력창을 비우기
+            fruit.value = "";
+            
+        });
+    });
+
+    </script>
+</head>
+<body>
+    <input type="text" id="fruit" placeholder="과일을 입력하세요">
+    <button id="btn1">추가</button>
+    <ul id="list">
+        <li>사과 <button onclick="this.parentElement.remove();">X</button></li>
+
+    </ul>
+</body>
+</html>
