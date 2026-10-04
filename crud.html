@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>도서 관리 시스템</title>
+</head>
+<body>
+    <div class="container">
+        <h2>도서 관리 시스템</h2>
+        <!-- 입력 Form -->
+        <form id="bookForm">
+            <input type="hidden" id="bookId">
+            <input type="text" id="title" placeholder="제목">
+            <input type="text" id="author" placeholder="저자">
+            <select id="category">
+                <option value="">카테고리</option>
+                <option value="Web">Web</option>
+            </select>
+            <input type="number" id="price" placeholder="가격">
+            <button type="submit">저장하기</button>
+        </form>
+        <!-- 출력 Table -->
+        <table>
+            <thead>
+                <tr><th>ID</th><th>제목</th><th>저자</th><th>카테고리</th><th>가격</th><th>관리</th></tr>
+            </thead>
+            <tbody id="bookTableBody"></tbody>
+        </table>
+    </div>
+</body>
+</html>
